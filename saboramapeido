@@ -39,26 +39,185 @@ local Delay = 0.1
 
 
 ------------------------------------------------
--- GUI
+-- GUI PRINCIPAL
 ------------------------------------------------
 
 local Gui = Instance.new("ScreenGui")
 Gui.Name = "🍑 Sabor ama peido guloso 👀👀"
 Gui.ResetOnSpawn = false
+Gui.DisplayOrder = 999
 Gui.Parent = Player.PlayerGui
 
 
 
--- ESCALA MOBILE
+------------------------------------------------
+-- ESCALA AUTOMÁTICA
+------------------------------------------------
 
 local Scale = Instance.new("UIScale")
 Scale.Parent = Gui
+
 
 if UIS.TouchEnabled and not UIS.KeyboardEnabled then
 	Scale.Scale = 0.85
 else
 	Scale.Scale = 1
 end
+
+
+
+
+------------------------------------------------
+-- BOTÃO ABRIR / FECHAR
+------------------------------------------------
+
+
+local OpenButton = Instance.new("TextButton")
+
+OpenButton.Name = "OpenButton"
+OpenButton.Parent = Gui
+
+OpenButton.Size = UDim2.new(0,80,0,80)
+
+-- PC E MOBILE
+OpenButton.Position = UDim2.new(1,-100,0.5,-40)
+
+
+OpenButton.BackgroundColor3 = Color3.fromRGB(120,40,200)
+
+OpenButton.Text = "🍑"
+OpenButton.TextSize = 40
+OpenButton.TextColor3 = Color3.new(1,1,1)
+
+OpenButton.Visible = true
+OpenButton.ZIndex = 999
+
+
+
+local OpenCorner = Instance.new("UICorner")
+OpenCorner.Parent = OpenButton
+OpenCorner.CornerRadius = UDim.new(1,0)
+
+
+
+local OpenStroke = Instance.new("UIStroke")
+OpenStroke.Parent = OpenButton
+OpenStroke.Color = Color3.fromRGB(255,255,255)
+OpenStroke.Thickness = 2
+
+
+
+
+------------------------------------------------
+-- JANELA PRINCIPAL
+------------------------------------------------
+
+
+local Frame = Instance.new("Frame")
+
+Frame.Name = "MainFrame"
+Frame.Parent = Gui
+
+Frame.Size = UDim2.new(0,320,0,450)
+
+Frame.Position = UDim2.new(
+	0.5,
+	-160,
+	0.5,
+	-225
+)
+
+
+Frame.BackgroundColor3 = Color3.fromRGB(20,20,25)
+
+Frame.BorderSizePixel = 0
+
+Frame.Visible = true
+
+Frame.ZIndex = 10
+
+
+
+local Corner = Instance.new("UICorner")
+Corner.Parent = Frame
+Corner.CornerRadius = UDim.new(0,12)
+
+
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = Frame
+Stroke.Color = Color3.fromRGB(130,60,255)
+Stroke.Thickness = 2
+
+
+
+
+------------------------------------------------
+-- ABRIR E FECHAR MENU
+------------------------------------------------
+
+
+OpenButton.MouseButton1Click:Connect(function()
+
+	Frame.Visible = not Frame.Visible
+
+end)
+
+
+
+
+
+------------------------------------------------
+-- TITULO
+------------------------------------------------
+
+
+local Title = Instance.new("TextLabel")
+
+Title.Parent = Frame
+
+Title.Size = UDim2.new(1,0,0,45)
+
+Title.BackgroundColor3 = Color3.fromRGB(80,30,150)
+
+Title.Text = "🍑 Sabor ama peido guloso 👀👀"
+
+Title.TextColor3 = Color3.new(1,1,1)
+
+Title.Font = Enum.Font.GothamBold
+
+Title.TextSize = 16
+
+Title.ZIndex = 11
+
+
+
+
+local Close = Instance.new("TextButton")
+
+Close.Parent = Title
+
+Close.Size = UDim2.new(0,45,1,0)
+
+Close.Position = UDim2.new(1,-45,0,0)
+
+Close.Text = "X"
+
+Close.TextSize = 20
+
+Close.BackgroundColor3 = Color3.fromRGB(180,40,50)
+
+Close.TextColor3 = Color3.new(1,1,1)
+
+Close.ZIndex = 12
+
+
+
+Close.MouseButton1Click:Connect(function()
+
+	Frame.Visible = false
+
+end)
 
 
 
