@@ -80,7 +80,12 @@ OpenButton.Parent = Gui
 OpenButton.Size = UDim2.new(0,80,0,80)
 
 -- PC E MOBILE
-OpenButton.Position = UDim2.new(1,-100,0.5,-40)
+OpenButton.Position = UDim2.new(
+	0,
+	30,
+	0.5,
+	-40
+)
 
 
 OpenButton.BackgroundColor3 = Color3.fromRGB(120,40,200)
@@ -120,11 +125,13 @@ Frame.Parent = Gui
 
 Frame.Size = UDim2.new(0,320,0,450)
 
+Frame.AnchorPoint = Vector2.new(0.5,0.5)
+
 Frame.Position = UDim2.new(
 	0.5,
-	-160,
+	0,
 	0.5,
-	-225
+	0
 )
 
 
