@@ -1,0 +1,308 @@
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("ReplicatedStorage")
+
+local Player = Players.LocalPlayer
+local Event = RS.Remotes.Events.FartEvent
+
+pcall(function()
+	local old = Player.PlayerGui:FindFirstChild("🍑 Sabor ama peido guloso 👀👀")
+	if old then
+		old:Destroy()
+	end
+end)
+
+local Effects = {
+	"Normal Fart",
+	"Quick Fart",
+	"Loud Fart",
+	"Spread Fart",
+	"Mist Fart",
+	"Silent Fart",
+	"Float Fart",
+	"Radius Fart",
+	"Tiny Fart",
+	"Long Fart",
+	"Sit Fart",
+	"Gurgle",
+	"Burp"
+}
+
+local Selected = {}
+local Running = false
+local Delay = 0.1
+
+
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "🍑 Sabor ama peido guloso 👀👀"
+Gui.ResetOnSpawn = false
+Gui.Parent = Player.PlayerGui
+
+
+local Frame = Instance.new("Frame")
+Frame.Parent = Gui
+Frame.Size = UDim2.new(0,300,0,430)
+Frame.Position = UDim2.new(.5,-150,.5,-215)
+Frame.BackgroundColor3 = Color3.fromRGB(20,20,25)
+Frame.BorderSizePixel = 0
+
+local Corner = Instance.new("UICorner",Frame)
+Corner.CornerRadius = UDim.new(0,12)
+
+local Stroke = Instance.new("UIStroke",Frame)
+Stroke.Color = Color3.fromRGB(130,60,255)
+Stroke.Thickness = 2
+
+
+local Title = Instance.new("TextLabel")
+Title.Parent = Frame
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundColor3 = Color3.fromRGB(80,30,150)
+Title.Text = "🍑 Sabor ama peido guloso 👀👀"
+Title.TextColor3 = Color3.new(1,1,1)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+
+
+local Close = Instance.new("TextButton")
+Close.Parent = Title
+Close.Size = UDim2.new(0,35,1,0)
+Close.Position = UDim2.new(1,-35,0,0)
+Close.Text = "X"
+Close.BackgroundColor3 = Color3.fromRGB(180,40,50)
+Close.TextColor3 = Color3.new(1,1,1)
+
+Close.MouseButton1Click:Connect(function()
+	Gui:Destroy()
+end)
+
+
+local Scroll = Instance.new("ScrollingFrame")
+Scroll.Parent = Frame
+Scroll.Position = UDim2.new(0,10,0,50)
+Scroll.Size = UDim2.new(1,-20,0,260)
+Scroll.BackgroundTransparency = 1
+Scroll.ScrollBarThickness = 5
+
+
+local Layout = Instance.new("UIListLayout")
+Layout.Parent = Scroll
+Layout.Padding = UDim.new(0,5)
+
+
+Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+	Scroll.CanvasSize = UDim2.new(
+		0,
+		0,
+		0,
+		Layout.AbsoluteContentSize.Y + 10
+	)
+end)
+
+
+local Counter = Instance.new("TextLabel")
+Counter.Parent = Frame
+Counter.Position = UDim2.new(0,10,0,315)
+Counter.Size = UDim2.new(1,-20,0,25)
+Counter.BackgroundTransparency = 1
+Counter.TextColor3 = Color3.new(1,1,1)
+Counter.Text = "Selecionados: 0"
+
+
+local DelayBox = Instance.new("TextBox")
+DelayBox.Parent = Frame
+DelayBox.Position = UDim2.new(0,10,0,345)
+DelayBox.Size = UDim2.new(0,100,0,30)
+DelayBox.Text = "0.1"
+DelayBox.BackgroundColor3 = Color3.fromRGB(40,40,45)
+DelayBox.TextColor3 = Color3.new(1,1,1)
+
+
+DelayBox.FocusLost:Connect(function()
+	local n = tonumber(DelayBox.Text)
+	if n then
+		Delay = n
+	end
+end)
+
+
+local function UpdateCounter()
+	local n = 0
+
+	for _,v in pairs(Selected) do
+		if v then
+			n += 1
+		end
+	end
+
+	Counter.Text = "Selecionados: "..n
+end
+
+
+
+for _,name in ipairs(Effects) do
+
+	local Button = Instance.new("TextButton")
+	Button.Parent = Scroll
+	Button.Size = UDim2.new(1,-5,0,32)
+	Button.BackgroundColor3 = Color3.fromRGB(45,45,50)
+	Button.Text = "☐ "..name
+	Button.TextColor3 = Color3.new(1,1,1)
+
+	Instance.new("UICorner",Button)
+
+
+	Button.MouseButton1Click:Connect(function()
+
+		Selected[name] = not Selected[name]
+
+		if Selected[name] then
+			Button.Text = "☑ "..name
+			Button.BackgroundColor3 = Color3.fromRGB(100,50,200)
+		else
+			Button.Text = "☐ "..name
+			Button.BackgroundColor3 = Color3.fromRGB(45,45,50)
+		end
+
+		UpdateCounter()
+
+	end)
+
+end
+
+------------------------------------------------
+-- BOTÕES START / STOP
+------------------------------------------------
+
+local Start = Instance.new("TextButton")
+Start.Parent = Frame
+Start.Position = UDim2.new(0,10,0,385)
+Start.Size = UDim2.new(0.45,0,0,30)
+Start.Text = "START"
+Start.BackgroundColor3 = Color3.fromRGB(60,180,70)
+Start.TextColor3 = Color3.new(1,1,1)
+
+Instance.new("UICorner",Start)
+
+
+local Stop = Instance.new("TextButton")
+Stop.Parent = Frame
+Stop.Position = UDim2.new(0.52,0,0,385)
+Stop.Size = UDim2.new(0.45,0,0,30)
+Stop.Text = "STOP"
+Stop.BackgroundColor3 = Color3.fromRGB(200,60,60)
+Stop.TextColor3 = Color3.new(1,1,1)
+
+Instance.new("UICorner",Stop)
+
+
+------------------------------------------------
+-- LOOP DOS EVENTOS
+------------------------------------------------
+
+Start.MouseButton1Click:Connect(function()
+
+	if Running then
+		return
+	end
+
+	Running = true
+
+	task.spawn(function()
+
+		while Running do
+
+			for effect,state in pairs(Selected) do
+
+				if state then
+
+					Event:FireServer(
+						effect,
+						3,
+						0,
+						1,
+						1
+					)
+
+					task.wait(Delay)
+
+				end
+
+			end
+
+			task.wait()
+
+		end
+
+	end)
+
+end)
+
+
+
+Stop.MouseButton1Click:Connect(function()
+
+	Running = false
+
+end)
+
+
+
+------------------------------------------------
+-- ARRASTAR JANELA
+------------------------------------------------
+
+local Dragging = false
+local DragStart
+local StartPosition
+
+
+Title.InputBegan:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+		Dragging = true
+
+		DragStart = input.Position
+		StartPosition = Frame.Position
+
+	end
+
+end)
+
+
+
+UIS.InputChanged:Connect(function(input)
+
+	if Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+
+		local Delta = input.Position - DragStart
+
+		Frame.Position = UDim2.new(
+
+			StartPosition.X.Scale,
+			StartPosition.X.Offset + Delta.X,
+
+			StartPosition.Y.Scale,
+			StartPosition.Y.Offset + Delta.Y
+
+		)
+
+	end
+
+end)
+
+
+
+UIS.InputEnded:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+		Dragging = false
+
+	end
+
+end)
+
+
+
