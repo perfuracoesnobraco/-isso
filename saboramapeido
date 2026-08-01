@@ -5,12 +5,15 @@ local RS = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer
 local Event = RS.Remotes.Events.FartEvent
 
+
 pcall(function()
 	local old = Player.PlayerGui:FindFirstChild("🍑 Sabor ama peido guloso 👀👀")
 	if old then
 		old:Destroy()
 	end
 end)
+
+
 
 local Effects = {
 	"Normal Fart",
@@ -28,10 +31,16 @@ local Effects = {
 	"Burp"
 }
 
+
 local Selected = {}
 local Running = false
 local Delay = 0.1
 
+
+
+------------------------------------------------
+-- GUI
+------------------------------------------------
 
 local Gui = Instance.new("ScreenGui")
 Gui.Name = "🍑 Sabor ama peido guloso 👀👀"
@@ -39,24 +48,88 @@ Gui.ResetOnSpawn = false
 Gui.Parent = Player.PlayerGui
 
 
+
+-- ESCALA MOBILE
+
+local Scale = Instance.new("UIScale")
+Scale.Parent = Gui
+
+if UIS.TouchEnabled and not UIS.KeyboardEnabled then
+	Scale.Scale = 0.85
+else
+	Scale.Scale = 1
+end
+
+
+
+------------------------------------------------
+-- BOTÃO FLUTUANTE MOBILE
+------------------------------------------------
+
+
+local OpenButton = Instance.new("TextButton")
+OpenButton.Parent = Gui
+OpenButton.Size = UDim2.new(0,80,0,80)
+OpenButton.Position = UDim2.new(1,-100,0.5,-40)
+OpenButton.BackgroundColor3 = Color3.fromRGB(120,40,200)
+OpenButton.Text = "🍑"
+OpenButton.TextSize = 40
+OpenButton.TextColor3 = Color3.new(1,1,1)
+
+
+local OpenCorner = Instance.new("UICorner")
+OpenCorner.Parent = OpenButton
+OpenCorner.CornerRadius = UDim.new(1,0)
+
+
+local OpenStroke = Instance.new("UIStroke")
+OpenStroke.Parent = OpenButton
+OpenStroke.Thickness = 2
+OpenStroke.Color = Color3.fromRGB(255,255,255)
+
+
+
+------------------------------------------------
+-- JANELA
+------------------------------------------------
+
+
 local Frame = Instance.new("Frame")
 Frame.Parent = Gui
-Frame.Size = UDim2.new(0,300,0,430)
-Frame.Position = UDim2.new(.5,-150,.5,-215)
+Frame.Size = UDim2.new(0,320,0,450)
+Frame.Position = UDim2.new(.5,-160,.5,-225)
 Frame.BackgroundColor3 = Color3.fromRGB(20,20,25)
 Frame.BorderSizePixel = 0
 
-local Corner = Instance.new("UICorner",Frame)
+
+
+local Corner = Instance.new("UICorner")
+Corner.Parent = Frame
 Corner.CornerRadius = UDim.new(0,12)
 
-local Stroke = Instance.new("UIStroke",Frame)
+
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = Frame
 Stroke.Color = Color3.fromRGB(130,60,255)
 Stroke.Thickness = 2
 
 
+
+OpenButton.MouseButton1Click:Connect(function()
+	Frame.Visible = not Frame.Visible
+end)
+
+
+
+------------------------------------------------
+-- TITULO
+------------------------------------------------
+
+
 local Title = Instance.new("TextLabel")
 Title.Parent = Frame
-Title.Size = UDim2.new(1,0,0,40)
+Title.Size = UDim2.new(1,0,0,45)
 Title.BackgroundColor3 = Color3.fromRGB(80,30,150)
 Title.Text = "🍑 Sabor ama peido guloso 👀👀"
 Title.TextColor3 = Color3.new(1,1,1)
@@ -64,157 +137,258 @@ Title.Font = Enum.Font.GothamBold
 Title.TextSize = 16
 
 
+
 local Close = Instance.new("TextButton")
 Close.Parent = Title
-Close.Size = UDim2.new(0,35,1,0)
-Close.Position = UDim2.new(1,-35,0,0)
+Close.Size = UDim2.new(0,45,1,0)
+Close.Position = UDim2.new(1,-45,0,0)
 Close.Text = "X"
+Close.TextSize = 20
 Close.BackgroundColor3 = Color3.fromRGB(180,40,50)
 Close.TextColor3 = Color3.new(1,1,1)
 
+
 Close.MouseButton1Click:Connect(function()
-	Gui:Destroy()
+	Frame.Visible = false
 end)
+
+------------------------------------------------
+-- LISTA DE EFEITOS
+------------------------------------------------
 
 
 local Scroll = Instance.new("ScrollingFrame")
 Scroll.Parent = Frame
-Scroll.Position = UDim2.new(0,10,0,50)
+Scroll.Position = UDim2.new(0,10,0,60)
 Scroll.Size = UDim2.new(1,-20,0,260)
 Scroll.BackgroundTransparency = 1
-Scroll.ScrollBarThickness = 5
+Scroll.ScrollBarThickness = 6
+Scroll.ScrollBarImageColor3 = Color3.fromRGB(130,60,255)
+
 
 
 local Layout = Instance.new("UIListLayout")
 Layout.Parent = Scroll
-Layout.Padding = UDim.new(0,5)
+Layout.Padding = UDim.new(0,6)
+
 
 
 Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+
 	Scroll.CanvasSize = UDim2.new(
 		0,
 		0,
 		0,
 		Layout.AbsoluteContentSize.Y + 10
 	)
+
 end)
+
+
+
+------------------------------------------------
+-- CONTADOR
+------------------------------------------------
 
 
 local Counter = Instance.new("TextLabel")
 Counter.Parent = Frame
-Counter.Position = UDim2.new(0,10,0,315)
+Counter.Position = UDim2.new(0,10,0,330)
 Counter.Size = UDim2.new(1,-20,0,25)
 Counter.BackgroundTransparency = 1
 Counter.TextColor3 = Color3.new(1,1,1)
+Counter.Font = Enum.Font.GothamBold
+Counter.TextSize = 15
 Counter.Text = "Selecionados: 0"
+
+
+
+------------------------------------------------
+-- DELAY
+------------------------------------------------
 
 
 local DelayBox = Instance.new("TextBox")
 DelayBox.Parent = Frame
-DelayBox.Position = UDim2.new(0,10,0,345)
-DelayBox.Size = UDim2.new(0,100,0,30)
+DelayBox.Position = UDim2.new(0,10,0,365)
+DelayBox.Size = UDim2.new(0,120,0,35)
+
 DelayBox.Text = "0.1"
+DelayBox.TextSize = 16
 DelayBox.BackgroundColor3 = Color3.fromRGB(40,40,45)
 DelayBox.TextColor3 = Color3.new(1,1,1)
 
+local DelayCorner = Instance.new("UICorner")
+DelayCorner.Parent = DelayBox
+
+
 
 DelayBox.FocusLost:Connect(function()
-	local n = tonumber(DelayBox.Text)
-	if n then
-		Delay = n
+
+	local Number = tonumber(DelayBox.Text)
+
+	if Number then
+		Delay = Number
 	end
+
 end)
 
 
+
+------------------------------------------------
+-- ATUALIZAR CONTADOR
+------------------------------------------------
+
+
 local function UpdateCounter()
-	local n = 0
+
+	local Amount = 0
 
 	for _,v in pairs(Selected) do
+		
 		if v then
-			n += 1
+			Amount += 1
 		end
+
 	end
 
-	Counter.Text = "Selecionados: "..n
+
+	Counter.Text = "Selecionados: "..Amount
+
 end
 
+
+
+------------------------------------------------
+-- CRIAR BOTÕES DOS EFEITOS
+------------------------------------------------
 
 
 for _,name in ipairs(Effects) do
 
+
 	local Button = Instance.new("TextButton")
 	Button.Parent = Scroll
-	Button.Size = UDim2.new(1,-5,0,32)
-	Button.BackgroundColor3 = Color3.fromRGB(45,45,50)
-	Button.Text = "☐ "..name
-	Button.TextColor3 = Color3.new(1,1,1)
+	
+	Button.Size = UDim2.new(1,-10,0,42)
 
-	Instance.new("UICorner",Button)
+	Button.BackgroundColor3 = Color3.fromRGB(45,45,50)
+
+	Button.Text = "☐ "..name
+
+	Button.TextColor3 = Color3.new(1,1,1)
+	Button.TextSize = 15
+	Button.Font = Enum.Font.Gotham
+
+
+
+	local ButtonCorner = Instance.new("UICorner")
+	ButtonCorner.Parent = Button
+
 
 
 	Button.MouseButton1Click:Connect(function()
 
+
 		Selected[name] = not Selected[name]
 
+
 		if Selected[name] then
+			
 			Button.Text = "☑ "..name
 			Button.BackgroundColor3 = Color3.fromRGB(100,50,200)
+
 		else
+			
 			Button.Text = "☐ "..name
 			Button.BackgroundColor3 = Color3.fromRGB(45,45,50)
+
 		end
+
 
 		UpdateCounter()
 
+
 	end)
+
 
 end
 
+
+
+
 ------------------------------------------------
--- BOTÕES START / STOP
+-- START
 ------------------------------------------------
+
 
 local Start = Instance.new("TextButton")
 Start.Parent = Frame
-Start.Position = UDim2.new(0,10,0,385)
-Start.Size = UDim2.new(0.45,0,0,30)
+Start.Position = UDim2.new(0,10,1,-45)
+Start.Size = UDim2.new(0.45,0,0,35)
+
 Start.Text = "START"
+Start.TextSize = 16
+Start.Font = Enum.Font.GothamBold
+
 Start.BackgroundColor3 = Color3.fromRGB(60,180,70)
 Start.TextColor3 = Color3.new(1,1,1)
 
-Instance.new("UICorner",Start)
+
+local StartCorner = Instance.new("UICorner")
+StartCorner.Parent = Start
+
+
+
+
+------------------------------------------------
+-- STOP
+------------------------------------------------
 
 
 local Stop = Instance.new("TextButton")
 Stop.Parent = Frame
-Stop.Position = UDim2.new(0.52,0,0,385)
-Stop.Size = UDim2.new(0.45,0,0,30)
+Stop.Position = UDim2.new(0.53,0,1,-45)
+Stop.Size = UDim2.new(0.45,0,0,35)
+
 Stop.Text = "STOP"
+Stop.TextSize = 16
+Stop.Font = Enum.Font.GothamBold
+
 Stop.BackgroundColor3 = Color3.fromRGB(200,60,60)
 Stop.TextColor3 = Color3.new(1,1,1)
 
-Instance.new("UICorner",Stop)
 
+local StopCorner = Instance.new("UICorner")
+StopCorner.Parent = Stop
 
 ------------------------------------------------
 -- LOOP DOS EVENTOS
 ------------------------------------------------
 
+
 Start.MouseButton1Click:Connect(function()
+
 
 	if Running then
 		return
 	end
 
+
 	Running = true
+
 
 	task.spawn(function()
 
+
 		while Running do
+
 
 			for effect,state in pairs(Selected) do
 
+
 				if state then
+
 
 					Event:FireServer(
 						effect,
@@ -224,17 +398,22 @@ Start.MouseButton1Click:Connect(function()
 						1
 					)
 
+
 					task.wait(Delay)
 
 				end
 
+
 			end
+
 
 			task.wait()
 
 		end
 
+
 	end)
+
 
 end)
 
@@ -248,25 +427,35 @@ end)
 
 
 
+
 ------------------------------------------------
 -- ARRASTAR JANELA
+-- PC + MOBILE
 ------------------------------------------------
+
 
 local Dragging = false
 local DragStart
 local StartPosition
 
 
+
 Title.InputBegan:Connect(function(input)
 
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+	or input.UserInputType == Enum.UserInputType.Touch then
+
 
 		Dragging = true
 
 		DragStart = input.Position
+
 		StartPosition = Frame.Position
 
+
 	end
+
 
 end)
 
@@ -274,21 +463,121 @@ end)
 
 UIS.InputChanged:Connect(function(input)
 
-	if Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
 
-		local Delta = input.Position - DragStart
+	if Dragging then
 
-		Frame.Position = UDim2.new(
 
-			StartPosition.X.Scale,
-			StartPosition.X.Offset + Delta.X,
+		if input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch then
 
-			StartPosition.Y.Scale,
-			StartPosition.Y.Offset + Delta.Y
 
-		)
+
+			local Delta = input.Position - DragStart
+
+
+
+			Frame.Position = UDim2.new(
+
+				StartPosition.X.Scale,
+				StartPosition.X.Offset + Delta.X,
+
+				StartPosition.Y.Scale,
+				StartPosition.Y.Offset + Delta.Y
+
+			)
+
+
+
+		end
+
 
 	end
+
+
+end)
+
+
+
+
+UIS.InputEnded:Connect(function(input)
+
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+	or input.UserInputType == Enum.UserInputType.Touch then
+
+
+		Dragging = false
+
+
+	end
+
+
+end)
+
+
+
+
+------------------------------------------------
+-- BOTÃO FLUTUANTE TAMBÉM ARRASTÁVEL MOBILE
+------------------------------------------------
+
+
+local ButtonDragging = false
+local ButtonStart
+local ButtonPos
+
+
+
+OpenButton.InputBegan:Connect(function(input)
+
+
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+
+		ButtonDragging = true
+
+		ButtonStart = input.Position
+
+		ButtonPos = OpenButton.Position
+
+
+	end
+
+
+end)
+
+
+
+UIS.InputChanged:Connect(function(input)
+
+
+	if ButtonDragging then
+
+
+		if input.UserInputType == Enum.UserInputType.Touch
+		or input.UserInputType == Enum.UserInputType.MouseMovement then
+
+
+			local Delta = input.Position - ButtonStart
+
+
+			OpenButton.Position = UDim2.new(
+
+				ButtonPos.X.Scale,
+				ButtonPos.X.Offset + Delta.X,
+
+				ButtonPos.Y.Scale,
+				ButtonPos.Y.Offset + Delta.Y
+
+			)
+
+
+		end
+
+
+	end
+
 
 end)
 
@@ -296,13 +585,15 @@ end)
 
 UIS.InputEnded:Connect(function(input)
 
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
 
-		Dragging = false
+	if input.UserInputType == Enum.UserInputType.Touch
+	or input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+
+		ButtonDragging = false
+
 
 	end
 
+
 end)
-
-
-
