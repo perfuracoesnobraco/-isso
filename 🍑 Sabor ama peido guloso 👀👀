@@ -59,9 +59,9 @@ Scale.Parent = Gui
 
 
 if UIS.TouchEnabled and not UIS.KeyboardEnabled then
-	Scale.Scale = 0.65
+	Scale.Scale = 0.4
 else
-	Scale.Scale = 1
+	Scale.Scale = 0.7
 end
 
 
@@ -74,12 +74,7 @@ local OpenButton = Instance.new("TextButton")
 OpenButton.Name = "OpenButton"
 OpenButton.Parent = Gui
 
-OpenButton.Size = UDim2.new(
-	0,
-	55,
-	0,
-	55
-)
+OpenButton.Size = UDim2.new(0,80,0,80)
 OpenButton.AnchorPoint = Vector2.new(0.5,0.5)
 OpenButton.Position = UDim2.new(
 	0.1,
@@ -696,7 +691,7 @@ Title.InputBegan:Connect(function(input)
 
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
+		or input.UserInputType == Enum.UserInputType.Touch then
 
 
 		Dragging = true
@@ -722,7 +717,7 @@ UIS.InputChanged:Connect(function(input)
 
 
 		if input.UserInputType == Enum.UserInputType.MouseMovement
-		or input.UserInputType == Enum.UserInputType.Touch then
+			or input.UserInputType == Enum.UserInputType.Touch then
 
 
 
@@ -761,7 +756,7 @@ UIS.InputEnded:Connect(function(input)
 
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
+		or input.UserInputType == Enum.UserInputType.Touch then
 
 
 		Dragging = false
@@ -795,7 +790,7 @@ OpenButton.InputBegan:Connect(function(input)
 
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
+		or input.UserInputType == Enum.UserInputType.Touch then
 
 
 		ButtonDragging = true
@@ -823,7 +818,7 @@ UIS.InputChanged:Connect(function(input)
 
 
 		if input.UserInputType == Enum.UserInputType.MouseMovement
-		or input.UserInputType == Enum.UserInputType.Touch then
+			or input.UserInputType == Enum.UserInputType.Touch then
 
 
 
@@ -864,7 +859,7 @@ UIS.InputEnded:Connect(function(input)
 
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
+		or input.UserInputType == Enum.UserInputType.Touch then
 
 
 		ButtonDragging = false
